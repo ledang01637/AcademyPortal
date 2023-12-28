@@ -1,0 +1,41 @@
+.btn-create{
+    width: 100%;
+    height: 50px;
+    background-color: #202938;
+    padding: 6px;
+    border-radius: 4px 4px 0 0;
+}
+.color-btn{
+    background-color: #6366F1;
+}
+.color-table{
+    width: 100%;
+    height: 300px;
+    background-color: #324154;
+    border-radius: 0px 0px 4px 4px;
+}
+.br-close{
+    background-color: red;
+}
+.background-{
+    height: 395pt;
+    width: 100%;
+    background-color: #324154;
+    border-radius: 0px 0px 4px 4px;
+    padding-top: 80px;
+    padding-left: 20px;
+}
+.content {
+    display: inline-block;
+    margin: 2px;
+    width: max-content;
+    height: max-content;
+    background-color: #202938;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    border-radius: 4px;
+}
+.content-btn{
+    border-radius: 4px;
+}
