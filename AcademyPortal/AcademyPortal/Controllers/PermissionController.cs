@@ -11,17 +11,11 @@ namespace AcademyPortal.Controllers
     {
         public ActionResult Index(string UserName)
         {
-            List<Item> ListItem = new List<Item>();
-            Item item = new Item();
-            Item item2 = new Item();
-            Item item3 = new Item();
-            item.UserName = UserName;
-            item2.UserName = "c";
-            item3.UserName = "d";
-            ListItem.Add(item);
-            ListItem.Add(item2);
-            ListItem.Add(item3);
-            return View(ListItem);
+            Item.items.Add(new Item()
+            {
+                UserName = UserName
+            });
+            return View(Item.items);
         }
         public ActionResult Create()
         {
@@ -30,7 +24,7 @@ namespace AcademyPortal.Controllers
         [HttpPost]
         public ActionResult SavePermission()
         {
-            
+
             return RedirectToAction("Index");
         }
     }
