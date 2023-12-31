@@ -4,28 +4,44 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using AcademyPortal.Handler;
+using System.Data;
+using System.Globalization;
 
 namespace AcademyPortal.Controllers
 {
     public class PermissionController : Controller
     {
-        public ActionResult Index(string UserName)
+        public ActionResult Index()
         {
-            Item.items.Add(new Item()
+            String query = "SELECT * FROM academyportal.permission;";
+            DataTable dt = DataProvider.Instance.DtExcuteQuery(query);
+            Item.items.Clear();
+            foreach (DataRow item in dt.Rows)
             {
-                UserName = UserName
-            });
+                Item.items.Add(new Item()
+                {
+                    ID = item.Field<int>("id"),
+                    UserName = item.Field<string>("permission_name").ToString()
+                });
+            }
             return View(Item.items);
         }
-        public ActionResult Create()
+        [HttpPost]
+        public ActionResult Create(string UserName)
+        {
+            DateTime createDate = DateTime.Now;
+            String query = "INSERT INTO `academyportal`.`permission`(`permission_name`,`created_at`)VALUES('" + UserName + "','" + createDate + "')";
+            int count = DataProvider.Instance.ExcuteNonQuery(query);
+            if (count > 0)
+            {
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Index");
+        }
+        
+        public ActionResult Update(int ID,string UserName)
         {
             return View();
-        }
-        [HttpPost]
-        public ActionResult SavePermission()
-        {
-
-            return RedirectToAction("Index");
         }
     }
 }
