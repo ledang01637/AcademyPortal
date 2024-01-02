@@ -41,7 +41,10 @@ namespace AcademyPortal.Controllers
         
         public ActionResult Update(int ID,string UserName)
         {
-            return View();
+            DateTime updateDate = DateTime.Now;
+            String query = "UPDATE `academyportal`.`permission` SET `permission_name` = '"+ UserName + "',`updated_at` = '"+ updateDate + "' WHERE id = " + ID +"";
+            DataProvider.Instance.ExcuteNonQuery(query);
+            return RedirectToAction("Index");
         }
     }
 }

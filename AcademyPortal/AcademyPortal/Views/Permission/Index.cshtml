@@ -20,18 +20,44 @@
         <div class="background-">
             @foreach (var item in Model)
             {
+                int a = 0;
                 <div class="content">
                     <label style="color: whitesmoke;" for="">@item.UserName</label>
-                    <button class="content-btn content-btn-edit" data-bs-toggle="modal" href="#UpdateModel">
+                    @*<label style="color: whitesmoke;" id="ID">@item.ID</label>*@
+
+                    <button class="content-btn content-btn-edit" data-bs-toggle="modal" onclick="getID(@item.ID)" href="#UpdateModel">
                         <i class="far fa-edit"></i>
                     </button>
                     <button class="content-btn content-btn-trash">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
+                <!-- Update -->
+                <div class="modal fade " id="UpdateModel" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="btn btn-close br-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form action="~/Permission/Update" method="post">
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="UserName" class="form-label">Name:</label>
+                                        <input type="text" class="form-control" name="UserName">
+                                    </div>
+                                </div>
+                                <di class="modal-footer">
+                                    <button type="submit" class="btn btn-success color-btn"> Update</button>
+                                </di>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             }
+
         </div>
-        <!-- Create -->
+
+         Create 
         <div class="modal fade " id="CreateModel" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -52,28 +78,13 @@
                 </div>
             </div>
         </div>
-        <!-- Update -->
-        <div class="modal fade " id="UpdateModel" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="btn btn-close br-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <form action="~/Permission/Update" method="post">
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="UserName" class="form-label">Name:</label>
-                                <input type="text" class="form-control" name="UserName">
-                            </div>
-                        </div>
-                        <di class="modal-footer">
-                            <button type="submit" class="btn btn-success color-btn"> Update</button>
-                        </di>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+    </div>  
+    <script>
+        function getID(ID) {
+            
+            return ID;
+        }
+    </script>
     <script src="~/Html//bootstrap/bootstrap-5.0.2-dist/js/bootstrap.min.js"></script>
 </body>
 </html>
