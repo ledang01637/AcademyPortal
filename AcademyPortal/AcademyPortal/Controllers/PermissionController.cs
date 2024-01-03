@@ -13,7 +13,7 @@ namespace AcademyPortal.Controllers
     {
         public ActionResult Index()
         {
-            String query = "SELECT * FROM academyportal.permission;";
+            String query = "SELECT * FROM academyportal.permission WHERE is_deleted = 0;";
             DataTable dt = DataProvider.Instance.DtExcuteQuery(query);
             Item.items.Clear();
             foreach (DataRow item in dt.Rows)
@@ -30,7 +30,7 @@ namespace AcademyPortal.Controllers
         public ActionResult Create(string UserName)
         {
             DateTime createDate = DateTime.Now;
-            String query = "INSERT INTO `academyportal`.`permission`(`permission_name`,`created_at`)VALUES('" + UserName + "','" + createDate + "')";
+            String query = "INSERT INTO `academyportal`.`permission`(`permission_name`,`created_at`,`is_deleted`)VALUES('" + UserName + "','" + createDate + "',"+ 0 +")";
             int count = DataProvider.Instance.ExcuteNonQuery(query);
             if (count > 0)
             {
@@ -43,6 +43,12 @@ namespace AcademyPortal.Controllers
         {
             DateTime updateDate = DateTime.Now;
             String query = "UPDATE `academyportal`.`permission` SET `permission_name` = '"+ UserName + "',`updated_at` = '"+ updateDate + "' WHERE id = " + ID +"";
+            DataProvider.Instance.ExcuteNonQuery(query);
+            return RedirectToAction("Index");
+        }
+        public ActionResult Delete(int ID)
+        {
+            String query = "UPDATE `academyportal`.`permission` SET `is_deleted` = " + 1 + "  WHERE id = " + ID + "";
             DataProvider.Instance.ExcuteNonQuery(query);
             return RedirectToAction("Index");
         }

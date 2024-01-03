@@ -2237,6 +2237,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Handler\DataProvider.cs" />
+    <Compile Include="Handler\GetID.cs" />
     <Compile Include="Handler\Item.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
