@@ -1,4 +1,4 @@
-﻿@model List<AcademyPortal.Handler.Item>
+﻿@model List<AcademyPortal.Handler.ListPermission>
 @{
 
 }
@@ -23,7 +23,7 @@
                 foreach (var item in Model)
                 {
                     <div class="content">
-                        <label style="color: whitesmoke;" for="">@item.UserName</label>
+                        <label style="color: whitesmoke;">@item.PermisstionName</label>
                         <button class="content-btn content-btn-edit" onclick="getId(@item.ID)" href="#UpdateModel" data-bs-toggle="modal">
                             <i class="far fa-edit"></i>
                         </button>
@@ -43,10 +43,9 @@
                             <form action="~/Permission/Update" method="post">
                                 <div class="modal-body">
                                     <div class="form-group">
-                                        <label for="UserName" class="form-label">Name:</label>
+                                        <label id="" class="form-label">Name:</label>
                                         <input type="text" class="form-control" name="UserName">
                                         <input id="idPermission" value="" name="ID" hidden />
-
                                     </div>
                                 </div>
                                 <di class="modal-footer">

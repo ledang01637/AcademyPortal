@@ -5,8 +5,8 @@ using System.Web;
 
 namespace AcademyPortal.Handler
 {
-    public class GetID
+    public class idPermission
     {
-        public int getID { get; set; }
+        public static List<int> permissionID = new List<int>();
     }
 }

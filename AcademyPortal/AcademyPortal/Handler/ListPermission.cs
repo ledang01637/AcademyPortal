@@ -6,10 +6,10 @@ using MySql.Data.MySqlClient;
 
 namespace AcademyPortal.Handler
 {
-    public class Item
+    public class ListPermission
     {
         public int ID { get; set; }
-        public string UserName { get; set; }
-        public static List<Item> items = new List<Item>();
+        public string PermisstionName { get; set; }
+        public static List<ListPermission> items = new List<ListPermission>();
     }
 }

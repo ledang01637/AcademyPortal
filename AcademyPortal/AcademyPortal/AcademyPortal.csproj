@@ -2227,18 +2227,22 @@
     <Content Include="Html\fontawesome-free-6.4.2\svgs\solid\z.svg" />
     <Content Include="Html\img\bin.png" />
     <Content Include="Html\img\pen.png" />
+    <Content Include="Html\js\jquery-3.7.1.min.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PermissionController.cs" />
+    <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Handler\DataProvider.cs" />
-    <Compile Include="Handler\GetID.cs" />
-    <Compile Include="Handler\Item.cs" />
+    <Compile Include="Handler\idPermission.cs" />
+    <Compile Include="Handler\ListPermission.cs" />
+    <Compile Include="Handler\ListRole.cs" />
+    <Compile Include="Handler\RolePermission.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -2322,7 +2326,7 @@
     <None Include="packages.config" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Permission\Index.cshtml" />
-    <Content Include="Views\Permission\Create.cshtml" />
+    <Content Include="Views\Role\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2332,7 +2336,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Html\js\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Shared\" />
   </ItemGroup>

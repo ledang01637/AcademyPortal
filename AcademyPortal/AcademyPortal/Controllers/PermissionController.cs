@@ -15,16 +15,16 @@ namespace AcademyPortal.Controllers
         {
             String query = "SELECT * FROM academyportal.permission WHERE is_deleted = 0;";
             DataTable dt = DataProvider.Instance.DtExcuteQuery(query);
-            Item.items.Clear();
+            ListPermission.items.Clear();
             foreach (DataRow item in dt.Rows)
             {
-                Item.items.Add(new Item()
+                ListPermission.items.Add(new ListPermission()
                 {
                     ID = item.Field<int>("id"),
-                    UserName = item.Field<string>("permission_name").ToString()
+                    PermisstionName = item.Field<string>("permission_name").ToString()
                 });
             }
-            return View(Item.items);
+            return View(ListPermission.items);
         }
         [HttpPost]
         public ActionResult Create(string UserName)
