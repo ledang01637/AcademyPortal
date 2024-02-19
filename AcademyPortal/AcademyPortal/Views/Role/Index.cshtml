@@ -1,5 +1,6 @@
-﻿@model AcademyPortal.Handler.RolePermission
-@{ 
+﻿@using AcademyPortal.Handler
+@model  ViewRolePermission
+@{
 
 }
 <!DOCTYPE html>
@@ -9,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AcademyPortal</title>
     <link rel="stylesheet" href="~/Html/bootstrap/bootstrap-5.0.2-dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="~/Html//css/style.css">
+    <link rel="stylesheet" href="~/Html/css/style.css">
     <link rel="stylesheet" href="~/Html//fontawesome-free-6.4.2/css/all.min.css">
     <script src="~/Html//js/jquery-3.7.1.min.js"></script>
 </head>
@@ -18,31 +19,40 @@
         <div class="btn-create">
             <button class="btn btn-primary color-btn" data-bs-toggle="modal" href="#CreateModel" role="button">+ Create</button>
         </div>
-        @foreach (var role in Model.listRoles)
-        {
-            <div class="background-">
-                <table class="table table-bordered">
-                    <thead style="background-color: #202938">
-                        <tr class="text-center color-text">
-                            <td style="width: 50px">No</td>
-                            <td style="width: 140px">Name</td>
-                            <td>Permissions</td>
-                            <td style="width: 200px">#</td>
-                        </tr>
-                    </thead>
-                    <tbody>
+
+        <div class="background-">
+            <table class="table table-bordered">
+                <thead style="background-color: #202938">
+                    <tr class="text-center color-text">
+                        <td style="width: 50px">No</td>
+                        <td style="width: 140px">Name</td>
+                        <td>Permissions</td>
+                        <td style="width: 200px">#</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var role in Model.rolePermissions)
+                    {
                         <tr class="color-text">
-                            <td class="text-center">@role.ID</td>
+                            <td class="text-center">@role.roleID</td>
                             <td>@role.roleName</td>
+
                             <td>
+                                @foreach (var permission in role.permissionName)
+                                {
                                 <div class="content">
-                                    <label style="color: whitesmoke" for="">Create Username</label>
+
+                                    <label style="color: whitesmoke" for="">@permission</label>
+
                                     <button class="content-btn content-btn-trash"
                                             form="form_delete">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </div>
+
+                                }
                             </td>
+
                             <td class="text-center">
                                 <button class="content-btn btn btn btn-edit"
                                         href="#UpdateModel"
@@ -55,18 +65,20 @@
                                 </button>
                             </td>
                         </tr>
-                    </tbody>
-                    <tfoot style="background-color: #202938">
-                        <tr class="text-center color-text">
-                            <td style="width: 50px">No</td>
-                            <td style="width: 140px">Name</td>
-                            <td>Permissions</td>
-                            <td style="width: 200px">#</td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        }
+                    }
+                </tbody>
+
+                <tfoot style="background-color: #202938">
+                    <tr class="text-center color-text">
+                        <td style="width: 50px">No</td>
+                        <td style="width: 140px">Name</td>
+                        <td>Permissions</td>
+                        <td style="width: 200px">#</td>
+                    </tr>
+                </tfoot>
+
+            </table>
+        </div>
         <!-- Create -->
         <div class="modal fade"
              id="CreateModel"
@@ -117,7 +129,7 @@
             $.ajax({
                 type: 'POST',
                 url: '/Role/CreateRolePermission',
-                data: JSON.stringify({ permissionName_: valuesCheck, roleName_: text}),
+                data: JSON.stringify({ permissionName_: valuesCheck, roleName_: text }),
                 contentType: 'application/json',
             });
             return false;

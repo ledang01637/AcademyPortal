@@ -2239,10 +2239,14 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Handler\DataProvider.cs" />
-    <Compile Include="Handler\idPermission.cs" />
+    <Compile Include="Handler\Role.cs" />
+    <Compile Include="Handler\IDPermission.cs" />
+    <Compile Include="Handler\Permission.cs" />
+    <Compile Include="Handler\KeyRolePermission.cs" />
     <Compile Include="Handler\ListPermission.cs" />
     <Compile Include="Handler\ListRole.cs" />
     <Compile Include="Handler\RolePermission.cs" />
+    <Compile Include="Handler\ViewRolePermission.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
