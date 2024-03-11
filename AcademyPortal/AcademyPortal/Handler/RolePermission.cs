@@ -8,6 +8,7 @@ namespace AcademyPortal.Handler
 {
     public class RolePermission
     {
+        public int Id { get; set; }
         public int roleID { get; set; }
         public string roleName { get; set; }
         public List<string> permissionName { set; get; }

@@ -1,22 +1,28 @@
 ﻿using AcademyPortal.Handler;
+using Mysqlx.Crud;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using System.Web.Services;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace AcademyPortal.Controllers
 {
     public class RoleController : Controller
     {
+
         public ActionResult Index()
         {
             //Permission
             String query = "SELECT * FROM academyportal.permission WHERE is_deleted = 0;";
             DataTable dt = DataProvider.Instance.DtExcuteQuery(query);
             ListPermission.items.Clear();
+
             foreach (DataRow item in dt.Rows)
             {
                 ListPermission.items.Add(new ListPermission()
@@ -29,7 +35,8 @@ namespace AcademyPortal.Controllers
             //Role
             String query2 = "select role.id,role.name from academyportal.role_permission inner join academyportal.role on academyportal.role.id = academyportal.role_permission.role_id group by role.id";
             DataTable dt2 = DataProvider.Instance.DtExcuteQuery(query2);
-            ListRole.roles.Clear();
+            KeyRolePermission.listKey.Clear();
+
             if (dt2.Rows.Count > 0)
             {
                 foreach (DataRow key in dt2.Rows)
@@ -46,6 +53,7 @@ namespace AcademyPortal.Controllers
             String query3 = "select * from academyportal.role_permission";
             DataTable dt3 = DataProvider.Instance.DtExcuteQuery(query3);
             Role.roles.Clear();
+
             //GetRole in RolePermission
             foreach (var item in KeyRolePermission.listKey)
             {
@@ -64,7 +72,8 @@ namespace AcademyPortal.Controllers
             }
 
             //GetPermission in RolePermission
-            
+            Permission.permissions.Clear();
+
             foreach (var item in Role.roles)
             {
                 foreach(var item1 in ListPermission.items)
@@ -88,11 +97,12 @@ namespace AcademyPortal.Controllers
 
             //GroupByRoleName
             RolePermission.listRolePermissions.Clear();
+
             foreach (var item in roleID)
             {
-                foreach(var item1 in KeyRolePermission.listKey)
+                foreach (var item1 in KeyRolePermission.listKey)
                 {
-                    if(item.roleID == item1.Key)
+                    if (item.roleID == item1.Key)
                     {
                         RolePermission.listRolePermissions.Add(new RolePermission()
                         {
@@ -103,7 +113,7 @@ namespace AcademyPortal.Controllers
                     }
                 }
             }
-
+            
             ViewRolePermission view = new ViewRolePermission();
             view.listPermissions = ListPermission.items;
             view.rolePermissions = RolePermission.listRolePermissions;
@@ -150,9 +160,73 @@ namespace AcademyPortal.Controllers
                         string query3 = "INSERT INTO `academyportal`.`role_permission` (`role_id`,`permission_id`,`created_at`) VALUES (" + idRole + ", " + item + ", '" + createDate + "')";
                         DataProvider.Instance.ExcuteNonQuery(query3);
                     }
-                }   
+                }
+                
             }
-            return RedirectToAction("Index");
+            return Json(new { success = true, redirectUrl = Url.Action("Index", "Role") });
+        }
+        public ActionResult DeleteRolePermission(int ID)
+        {
+            String query = "Delete FROM academyportal.role_permission where role_id = "+ ID + "";
+            DataProvider.Instance.ExcuteNonQuery(query);
+            return Json(new { success = true, redirectUrl = Url.Action("Index", "Role") });
+        }
+
+        public ActionResult UpdateRolePermission(string[] permissions,string roleName)
+        {
+            DateTime updateDate = DateTime.Now;
+            string query = "select permission.id,permission_name from academyportal.role_permission \r\ninner join academyportal.permission \r\non academyportal.permission.id = academyportal.role_permission.permission_id\r\ninner join academyportal.role \r\non academyportal.role.id = academyportal.role_permission.role_id\r\nwhere role.name = '"+ roleName + "'";
+            DataTable dt = DataProvider.Instance.DtExcuteQuery(query);
+
+            List<string> existingPermissions = new List<string>();
+            foreach (DataRow row in dt.Rows)
+            {
+                existingPermissions.Add(row["permission_name"].ToString());
+            }
+
+            //Delete old permission
+            List<string> newPermissions = permissions.ToList();
+            string querySelectIdrole = "SELECT id FROM academyportal.role where name = '" + roleName + "'";
+            DataTable dt2 = DataProvider.Instance.DtExcuteQuery(querySelectIdrole);
+            int idRole = 0;
+            foreach(DataRow data in dt2.Rows)
+            {
+                idRole = data.Field<int>("id");
+            }
+                                    
+            foreach (string permission in existingPermissions)
+            {
+                if (!newPermissions.Contains(permission))
+                {
+                    string querySelect = "SELECT id FROM academyportal.permission where permission_name = '"+ permission + "'";
+                    DataTable dt1 = DataProvider.Instance.DtExcuteQuery(querySelect);
+                    foreach(DataRow item in dt1.Rows)
+                    {
+                        string queryDelete = "Delete from academyportal.role_permission \r\nwhere role_id = " + idRole + " and permission_id = " + item.Field<int>("id") + "";
+                        DataProvider.Instance.ExcuteNonQuery(queryDelete);
+                    }
+                }
+            }
+
+            
+
+            //Add new permission
+            foreach (string permission in newPermissions)
+            {
+                if (!existingPermissions.Contains(permission))
+                {
+                    string querySelect = "SELECT id FROM academyportal.permission where permission_name = '" + permission + "'";
+                    DataTable dt1 = DataProvider.Instance.DtExcuteQuery(querySelect);
+                    foreach (DataRow item in dt1.Rows)
+                    {
+                        string queryAdd = "INSERT INTO `academyportal`.`role_permission` (`role_id`,`permission_id`,`updated_at`) VALUES(" + idRole + ", " + item.Field<int>("id") + ", '" + updateDate + "')";
+                        DataProvider.Instance.ExcuteNonQuery(queryAdd);
+                    }
+                }
+            }
+
+
+            return Json(new { success = true, redirectUrl = Url.Action("Index", "Role") });
         }
     }
 }
