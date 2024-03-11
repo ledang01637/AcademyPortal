@@ -172,6 +172,25 @@ namespace AcademyPortal.Controllers
             return Json(new { success = true, redirectUrl = Url.Action("Index", "Role") });
         }
 
+        public ActionResult DeletePermission(string permissionName, string roleName)
+        {
+            //Delete old permission
+            string querySelectIdrole = "SELECT id FROM academyportal.role where name = '" + roleName + "'";
+            DataTable dt2 = DataProvider.Instance.DtExcuteQuery(querySelectIdrole);
+            int idRole = 0;
+            foreach (DataRow data in dt2.Rows)
+            {
+                idRole = data.Field<int>("id");
+            }
+            string querySelect = "SELECT id FROM academyportal.permission where permission_name = '" + permissionName + "'";
+            DataTable dt1 = DataProvider.Instance.DtExcuteQuery(querySelect);
+            foreach (DataRow item in dt1.Rows)
+            {
+                string queryDelete = "Delete from academyportal.role_permission \r\nwhere role_id = " + idRole + " and permission_id = " + item.Field<int>("id") + "";
+                DataProvider.Instance.ExcuteNonQuery(queryDelete);
+            }
+            return Json(new { success = true, redirectUrl = Url.Action("Index", "Role") });
+        }
         public ActionResult UpdateRolePermission(string[] permissions,string roleName)
         {
             DateTime updateDate = DateTime.Now;

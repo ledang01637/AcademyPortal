@@ -37,8 +37,9 @@
                             <td class="text-center">@role.roleID</td>
                             <input type="hidden" class="roleID-input" value="@role.roleID">
                             <td class="roleNameUpdate">@role.roleName</td>
+                            <input type="hidden" class="roleName" value="@role.roleName">
 
-                            <td >
+                            <td>
                                 @foreach (var permission in role.permissionName)
                                 {
                                     <div class="content">
@@ -46,12 +47,11 @@
                                         <label style="color: whitesmoke" for="">@permission</label>
                                         <input type="hidden" class="hiddenInput" value="@permission">
 
-                                        <button class="content-btn content-btn-trash"
+                                        <button class="content-btn content-btn-trash btnDeletePermission"
                                                 form="form_delete">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
-
                                 }
                             </td>
 
@@ -200,7 +200,27 @@
             });
         });
 
-        
+        //DeletePermission
+        $(".btnDeletePermission").click(function () {
+
+            var parentElement = $(this).closest('.color-text');
+            var parentPermission = $(this).closest('.content');
+            var text = parentElement.find(".roleName").val();
+            var name = parentPermission.find(".hiddenInput").val();
+
+            $.ajax({
+                type: "POST",
+                url: "/Role/DeletePermission",
+                data: JSON.stringify({ permissionName: name,roleName: text }),
+                contentType: 'application/json',
+                success: function (response) {
+                    if (response.success) {
+                        window.location.href = response.redirectUrl;
+                    }
+                }
+            });
+        })
+
         //ShowInfor len form update
         $(".content-btn-update").click(function () {
             var row = $(this).closest("tr");
